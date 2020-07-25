@@ -89,12 +89,6 @@ class MyHomePage extends StatelessWidget {
               },
             ),
 
-            // ListTile(
-            //   title: Text('Tarjetas'),
-            //   onTap: () {
-            //     final route2 =
-            //         MaterialPageRoute(builder: (context) => CardPage());
-
             //     Navigator.push(context, route2);
             //   },
             // ),
