@@ -2,71 +2,69 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class ChartsDemo_pt1 extends StatefulWidget {
-  ChartsDemo_pt1({Key key}) : super(key: key);
-
-  final String _title = "Charts Demo Pt1";
-
-  @override
-  _ChartsDemo_pt1State createState() => _ChartsDemo_pt1State();
-}
-
-class _ChartsDemo_pt1State extends State<ChartsDemo_pt1> {
+class VerticalBarLabelChart extends StatelessWidget {
   List<charts.Series> seriesList;
-  static List<charts.Series<Sales, String>> _createRandomData() {
-    final random = Random();
-    final desktopSalesData = [
-      Sales('2015', random.nextInt(100)),
-      Sales('2016', random.nextInt(100)),
-      Sales('2017', random.nextInt(100)),
-      Sales('2018', random.nextInt(100)),
-      Sales('2019', random.nextInt(100)),
+  final bool animate;
+
+  VerticalBarLabelChart(this.seriesList, {this.animate});
+
+  /// Creates a [BarChart] with sample data and no transition.
+  factory VerticalBarLabelChart.withSampleData() {
+    return new VerticalBarLabelChart(
+      _createSampleData(),
+      // Disable animations for image tests.
+      animate: false,
+    );
+  }
+
+  // [BarLabelDecorator] will automatically position the label
+  // inside the bar if the label will fit. If the label will not fit,
+  // it will draw outside of the bar.
+  // Labels can always display inside or outside using [LabelPosition].
+  //
+  // Text style for inside / outside can be controlled independently by setting
+  // [insideLabelStyleSpec] and [outsideLabelStyleSpec].
+  @override
+  Widget build(BuildContext context) {
+    return new charts.BarChart(
+      seriesList,
+      animate: animate,
+      // Set a bar label decorator.
+      // Example configuring different styles for inside/outside:
+      //       barRendererDecorator: new charts.BarLabelDecorator(
+      //          insideLabelStyleSpec: new charts.TextStyleSpec(...),
+      //          outsideLabelStyleSpec: new charts.TextStyleSpec(...)),
+      barRendererDecorator: new charts.BarLabelDecorator<String>(),
+      domainAxis: new charts.OrdinalAxisSpec(),
+    );
+  }
+
+  /// Create one series with sample hard coded data.
+  static List<charts.Series<OrdinalSales, String>> _createSampleData() {
+    final data = [
+      new OrdinalSales('2014', 5),
+      new OrdinalSales('2015', 25),
+      new OrdinalSales('2016', 100),
+      new OrdinalSales('2017', 75),
     ];
 
     return [
-      charts.Series<Sales, String>(
+      new charts.Series<OrdinalSales, String>(
           id: 'Sales',
-          domainFn: (Sales sales, _) => sales.year,
-          measureFn: (Sales sales, _) => sales.sales,
-          data: desktopSalesData)
+          domainFn: (OrdinalSales sales, _) => sales.year,
+          measureFn: (OrdinalSales sales, _) => sales.sales,
+          data: data,
+          // Set a label accessor to control the text of the bar label.
+          labelAccessorFn: (OrdinalSales sales, _) =>
+              '\$${sales.sales.toString()}')
     ];
-  }
-
-  barChart() {
-    return charts.BarChart(
-      seriesList,
-      animate: true,
-      vertical: true,
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    seriesList = _createRandomData();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget._title),
-      ),
-      body: Center(
-        child: Container(
-          height: 600,
-          width: 400,
-          padding: EdgeInsets.all(20),
-          child: barChart(),
-        ),
-      ),
-    );
   }
 }
 
-class Sales {
+/// Sample ordinal data type.
+class OrdinalSales {
   final String year;
   final int sales;
 
-  Sales(this.year, this.sales);
+  OrdinalSales(this.year, this.sales);
 }

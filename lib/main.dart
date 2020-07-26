@@ -44,8 +44,10 @@ class MyHomePage extends StatelessWidget {
                 //style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
               ),
               onTap: () {
-                final route1 =
-                    MaterialPageRoute(builder: (context) => ChartsDemo_pt1());
+                List seriesL = ['name1', 'name2', 'name3'];
+                final route1 = MaterialPageRoute(
+                    builder: (context) => VerticalBarLabelChart(
+                        VerticalBarLabelChart.withSampleData().seriesList));
 
                 Navigator.push(context, route1);
               },
