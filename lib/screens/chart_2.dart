@@ -1,91 +1,87 @@
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+class HorizontalBarLabelChart extends StatelessWidget {
+  final List<charts.Series> seriesList;
+  final bool animate;
 
-class Charts_pt2 extends StatelessWidget {
-  const Charts_pt2({Key key}) : super(key: key);
+  HorizontalBarLabelChart(this.seriesList, {this.animate});
 
+  /// Creates a [BarChart] with sample data and no transition.
+  factory HorizontalBarLabelChart.withSampleData() {
+    return new HorizontalBarLabelChart(
+      _createSampleData(),
+      // Disable animations for image tests.
+      animate: false,
+    );
+  }
+
+  // [BarLabelDecorator] will automatically position the label
+  // inside the bar if the label will fit. If the label will not fit and the
+  // area outside of the bar is larger than the bar, it will draw outside of the
+  // bar. Labels can always display inside or outside using [LabelPosition].
+  //
+  // Text style for inside / outside can be controlled independently by setting
+  // [insideLabelStyleSpec] and [outsideLabelStyleSpec].
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Widgets Pt2')),
-        body: Center(
-          child: Container(
-            margin: EdgeInsets.all(16.0),
-            padding: EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.purple[900],
-              border: Border.all(),
-              borderRadius: BorderRadius.all(Radius.circular(3.0)),
-            ),
-            // column of three rows
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FloatingActionButton(
-                  onPressed: () {
-                    final route1 =
-                        MaterialPageRoute(builder: (context) => MyApp());
-
-                    Navigator.push(context, route1);
-                  },
-                  tooltip: 'Increment',
-                  child: Icon(Icons.arrow_back),
-                  backgroundColor: Colors.orange,
+      appBar: AppBar(title: Text('Widgets Chart1')),
+      body: Column(
+        children: <Widget>[
+          Center(
+            child: Container(
+              width: 400,
+              height: 500,
+              child: Center(
+                child: charts.BarChart(
+                  seriesList,
+                  animate: animate,
+                  vertical: false,
+                  // Set a bar label decorator.
+                  // Example configuring different styles for inside/outside:
+                  //       barRendererDecorator: new charts.BarLabelDecorator(
+                  //          insideLabelStyleSpec: new charts.TextStyleSpec(...),
+                  //          outsideLabelStyleSpec: new charts.TextStyleSpec(...)),
+                  barRendererDecorator: new charts.BarLabelDecorator<String>(),
+                  // Hide domain axis.
+                  domainAxis: new charts.OrdinalAxisSpec(
+                      renderSpec: new charts.NoneRenderSpec()),
                 ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(
-                        Icons.favorite,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Text(
-                      'Example Container/Column/Row/Text',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-
-                // second row (single item)
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 16.0,
-                    horizontal: 0,
-                  ),
-                  child: Text(
-                    'Send programmable push notifications to iOS and Android devices with delivery and open rate tracking built in.',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-
-                // third row
-                Row(
-                  children: [
-                    Text(
-                      'EXPLORE BEAMS',
-                      style: TextStyle(
-                        color: Colors.green,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
           ),
-        ));
+        ],
+      ),
+    );
   }
+
+  /// Create one series with sample hard coded data.
+  static List<charts.Series<OrdinalSales, String>> _createSampleData() {
+    final data = [
+      new OrdinalSales('2014', 5),
+      new OrdinalSales('2015', 25),
+      new OrdinalSales('2016', 100),
+      new OrdinalSales('2017', 75),
+    ];
+
+    return [
+      new charts.Series<OrdinalSales, String>(
+          id: 'Sales',
+          domainFn: (OrdinalSales sales, _) => sales.year,
+          measureFn: (OrdinalSales sales, _) => sales.sales,
+          data: data,
+          // Set a label accessor to control the text of the bar label.
+          labelAccessorFn: (OrdinalSales sales, _) =>
+              '${sales.year}: \$${sales.sales.toString()}')
+    ];
+  }
+}
+
+/// Sample ordinal data type.
+class OrdinalSales {
+  final String year;
+  final int sales;
+
+  OrdinalSales(this.year, this.sales);
 }
