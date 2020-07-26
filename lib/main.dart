@@ -41,11 +41,11 @@ class MyHomePage extends StatelessWidget {
             ListTile(
               title: Text(
                 'Charts (Pt1)',
-                style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
+                //style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
               ),
               onTap: () {
                 final route1 =
-                    MaterialPageRoute(builder: (context) => Charts_pt1());
+                    MaterialPageRoute(builder: (context) => ChartsDemo_pt1());
 
                 Navigator.push(context, route1);
               },
@@ -53,7 +53,7 @@ class MyHomePage extends StatelessWidget {
             ListTile(
               title: Text(
                 'Charts (Pt2)',
-                style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
+                //style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
               ),
               onTap: () {
                 final route1 =
@@ -66,7 +66,7 @@ class MyHomePage extends StatelessWidget {
             ListTile(
               title: Text(
                 'Charts Pt3',
-                style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
+                //style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
               ),
               onTap: () {
                 final route1 =
@@ -79,7 +79,7 @@ class MyHomePage extends StatelessWidget {
             ListTile(
               title: Text(
                 'Charts Pt4',
-                style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
+                //style: TextStyle(fontSize: 25, fontStyle: FontStyle.italic),
               ),
               onTap: () {
                 final route1 =
