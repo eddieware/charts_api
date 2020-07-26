@@ -26,26 +26,53 @@ class VerticalBarLabelChart extends StatelessWidget {
   // [insideLabelStyleSpec] and [outsideLabelStyleSpec].
   @override
   Widget build(BuildContext context) {
-    return new charts.BarChart(
-      seriesList,
-      animate: animate,
-      // Set a bar label decorator.
-      // Example configuring different styles for inside/outside:
-      //       barRendererDecorator: new charts.BarLabelDecorator(
-      //          insideLabelStyleSpec: new charts.TextStyleSpec(...),
-      //          outsideLabelStyleSpec: new charts.TextStyleSpec(...)),
-      barRendererDecorator: new charts.BarLabelDecorator<String>(),
-      domainAxis: new charts.OrdinalAxisSpec(),
+    return Scaffold(
+      appBar: AppBar(title: Text('Widgets Chart1')),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 16,
+            ),
+            Container(
+              // padding: EdgeInsets.all(16),
+              //color: Colors.green,
+              height: 500,
+              width: 400,
+              child: charts.BarChart(
+                seriesList,
+                animate: animate,
+                // Set a bar label decorator.
+                // Example configuring different styles for inside/outside:
+                //       barRendererDecorator: new charts.BarLabelDecorator(
+                //          insideLabelStyleSpec: new charts.TextStyleSpec(...),
+                //          outsideLabelStyleSpec: new charts.TextStyleSpec(...)),
+                barRendererDecorator: new charts.BarLabelDecorator<String>(),
+                domainAxis: new charts.OrdinalAxisSpec(),
+              ),
+            ),
+            Container(
+              //color: Colors.amber,
+              child: Text(
+                'Android Class',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
   /// Create one series with sample hard coded data.
   static List<charts.Series<OrdinalSales, String>> _createSampleData() {
     final data = [
-      new OrdinalSales('2014', 5),
-      new OrdinalSales('2015', 25),
-      new OrdinalSales('2016', 100),
-      new OrdinalSales('2017', 75),
+      new OrdinalSales('Fernando', 55),
+      new OrdinalSales('Jose', 95),
+      new OrdinalSales('Edgar', 50),
     ];
 
     return [
@@ -56,7 +83,7 @@ class VerticalBarLabelChart extends StatelessWidget {
           data: data,
           // Set a label accessor to control the text of the bar label.
           labelAccessorFn: (OrdinalSales sales, _) =>
-              '\$${sales.sales.toString()}')
+              '${sales.sales.toString()}pts')
     ];
   }
 }
